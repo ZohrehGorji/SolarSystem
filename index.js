@@ -25,7 +25,7 @@ const routes = require('./routes/routes');
 app.listen(3000, () => {
     console.log(`Server Started at ${3000}`)
 })
-app.use('/api', routes)
+app.use('/', routes)
 app.use(
     '/doc',
     swaggerUi.serve,
