@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 
-const dataSchema = new mongoose.Schema({
+const planet = new mongoose.Schema({
     name: String,
-    age: Number
+    size: Number,
+    distance_to_sun: Number
 })
 
-module.exports = mongoose.model('Data', dataSchema)
+module.exports = mongoose.model('Data', planet)

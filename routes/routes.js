@@ -8,7 +8,8 @@ router.post('/post', async (req, res) => {
 
     const data = new Model({
         name: req.body.name,
-        age: req.body.age
+        size: req.body.size,
+        distance_to_sun : req.body.distance_to_sun
     })
 
     try {
@@ -67,6 +68,16 @@ router.delete('/delete/:id', async (req, res) => {
         const id = req.params.id;
         const data = await Model.findByIdAndDelete(id)
         res.send(`Document with ${data.name} has been deleted..`)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
+//Delete All
+router.delete('/deleteAll', async (req, res) => {
+    try {
+        const data = await Model.deleteMany()
+        res.send(`database reset`)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
