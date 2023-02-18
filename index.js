@@ -3,10 +3,10 @@ const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const mongoString = process.env.DATABASE_URL;
-
-const swaggerUi = require('swagger-ui-express');
-const swaggerFile = require('./swagger_output.json')
-
+//require('./models/users.model')
+const port = process.env.PORT || "3000";
+const swaggerUI = require('swagger-ui-express')
+const swaggerJSDoc = require('swagger-jsdoc')
 mongoose.connect(mongoString);
 const database = mongoose.connection;
 
@@ -18,19 +18,31 @@ database.once('connected', () => {
     console.log('Database Connected');
 })
 const app = express();
+const options = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Solar System",
+            version: "1.0.0",
+            description: "Solar System test case APIs",
+        },
+        servers: [
+            {
+                url: "http://localhost:3000",
+            },
+        ],
+    },
+    apis: ["./routes/*.js"],
+};
+const specs = swaggerJSDoc(options);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use(cors())
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
 const routes = require('./routes/routes');
-app.listen(3000, () => {
-    console.log(`Server Started at ${3000}`)
-})
 app.use('/', routes)
-app.use(
-    '/doc',
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerFile)
-);
-
-
-
+mongoose.Promise = global.Promise;
+module.exports = app;
+app.listen(port, () => {
+    console.log(`Listening to requests on http://localhost:${port}`);
+});
