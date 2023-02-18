@@ -4,8 +4,6 @@ const router = express.Router();
 
 //Post Method
 router.post('/post', async (req, res) => {
-    console.log(req.body.name);
-
     const data = new Model({
         name: req.body.name,
         size: req.body.size,
@@ -13,7 +11,6 @@ router.post('/post', async (req, res) => {
     })
 
     try {
-        console.log(data.name);
         const dataToSave = await data.save();
         res.status(200).json(dataToSave)
     }
@@ -38,6 +35,21 @@ router.get('/getOne/:id', async (req, res) => {
     try {
         const data = await Model.findById(req.params.id);
         res.json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+//Get distance between two planet
+router.get('/getDistance/:firstPlanetId/:secondPlanetId', async (req, res) => {
+    try {
+        console.log(req.params.secondPlanetId);
+
+        const firstPlanet = await Model.findById(req.params.firstPlanetId);
+
+        const secondPlanet = await Model.findById(req.params.secondPlanetId);
+        const difference= Math.abs(firstPlanet.distance_to_sun - secondPlanet.distance_to_sun)
+        res.json(difference)
     }
     catch (error) {
         res.status(500).json({ message: error.message })
