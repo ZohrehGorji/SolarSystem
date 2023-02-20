@@ -141,13 +141,13 @@ router.get('/getOne/:id', async (req, res) => {
  *     summary: Returns the distance between two planets
  *     parameters:
  *        - in: path
- *          id: firstPlanetId
+ *          name: firstPlanetId
  *          schema:
  *              type: string
  *              required: true
  *          description: id to find the first planet
  *        - in: path
- *          id: secondPlanetId
+ *          name: secondPlanetId
  *          schema:
  *              type: string
  *              required: true
